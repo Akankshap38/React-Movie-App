@@ -1,9 +1,9 @@
 import React from "react";
-
+import { Col } from 'react-bootstrap';
 function MovieCard(props){
-    return (<div className="image-container d-flex justify-content-start m-3">
+    return (<Col className="image-container d-flex justify-content-start">
         <img src={props.imgLink} alt={props.title}/>
-    </div>)
+    </Col>)
 }
 
 export default MovieCard

@@ -2,7 +2,7 @@ import React,{useState, useEffect} from "react"
 import Header from "./Header"
 import SearchBox from "./SearchBox"
 import MovieCard from "./MovieCards"
-
+import { Row} from 'react-bootstrap';
 function App(){
 
     const [movieList, updateMovieList] = useState([]);
@@ -30,13 +30,12 @@ function App(){
         <div className='row d-flex align-items-center mt-4 mb-4'>
             <Header />
             <SearchBox onSearchChange={setSearchValue}/>
-            <div className="row">
+            <Row>
                 { movieList.map((element,index)=>{
                     return (<MovieCard imgLink={element.Poster} title={element.Title} key={index}/>)
                     })
                 } 
-            </div>
-           
+            </Row>
         </div>
     </div>)
 
