@@ -2,11 +2,11 @@ import React from "react";
 
 function SearchBox(props){
 
-    return (<div className='col col-sm-4'>
-        <input className="form-control" type="text" onChange={(event)=>{
+    return (    
+    <input className="form-inline" type="search" onChange={(event)=>{
             props.onSearchChange(event.target.value);
-        }} placeholder='Type to search...' />
-    </div>)
+        }} placeholder='Type to search...'/>
+  )
 }
 
 export default SearchBox;

@@ -26,13 +26,21 @@ function App(){
             searchChanged(searchValue);
     },[searchValue]);
 
+    useEffect(()=>{
+        console.log(favList);
+    },[favList]);
 
     function addFavouriteToList(title,Poster){
         updateFavList(prevValue=>{
-            return [...prevValue, {
-                Title:title,
-                Poster:Poster
-            }] ;
+            var flag = prevValue.find(element=>{
+                return element.Title===title;
+            })
+            if(typeof flag==='undefined')
+                { return [...prevValue, {
+                    Title:title,
+                    Poster:Poster
+                }] ;}
+            return prevValue;
         })
     }
 
@@ -42,13 +50,9 @@ function App(){
                 return element.Title!==title})
         })
     }
-    
-    useEffect(()=>{
-        console.log(favList);
-    },[favList]);
 
     return (<div className='container-fluid movie-app'>
-        <div className='row d-flex align-items-center mt-4 mb-4'>
+        <div className='row'>
             <Header content="Movies"/>
             <SearchBox onSearchChange={setSearchValue}/>
         </div>

@@ -1,9 +1,7 @@
 import React from "react";
 
 function Header(props){
-    return (<div className='col'>
-        <h1>{props.content}</h1>
-    </div>)
+    return (<h1 className="col-md-4">{props.content}</h1>)
 }
 
 export default Header;
