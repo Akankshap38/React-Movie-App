@@ -1,8 +1,8 @@
 import React from "react";
 
-function Header(){
+function Header(props){
     return (<div className='col'>
-        <h1>Movies</h1>
+        <h1>{props.content}</h1>
     </div>)
 }
 

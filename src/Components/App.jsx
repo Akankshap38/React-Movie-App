@@ -2,7 +2,8 @@ import React,{useState, useEffect} from "react"
 import Header from "./Header"
 import SearchBox from "./SearchBox"
 import MovieCard from "./MovieCards"
-import { Row} from 'react-bootstrap';
+import AddFavComponent from "./AddFavComponent";
+import RemoveFavComponent from "./RemoveFavourite";
 
 function App(){
 
@@ -26,27 +27,56 @@ function App(){
     },[searchValue]);
 
 
-    function addFavouriteToList(title){
+    function addFavouriteToList(title,Poster){
         updateFavList(prevValue=>{
-            return [...prevValue, title] ;
+            return [...prevValue, {
+                Title:title,
+                Poster:Poster
+            }] ;
         })
     }
 
+    function removeFavouriteFromList(title,poster){
+        updateFavList(prevValue=>{ 
+            return prevValue.filter((element)=>{
+                return element.Title!==title})
+        })
+    }
+    
     useEffect(()=>{
         console.log(favList);
     },[favList]);
-    
+
     return (<div className='container-fluid movie-app'>
         <div className='row d-flex align-items-center mt-4 mb-4'>
-            <Header />
+            <Header content="Movies"/>
             <SearchBox onSearchChange={setSearchValue}/>
-            <Row>
-                { movieList.map((element,index)=>{
-                    return (<MovieCard imgLink={element.Poster} title={element.Title} key={index} onFavClick={addFavouriteToList}/>)
-                    })
-                } 
-            </Row>
         </div>
+        <div className="row">
+            { movieList.map((element,index)=>{
+                    return (<MovieCard imgLink={element.Poster} 
+                                       title={element.Title} 
+                                       key={index} 
+                                       onFavClick={addFavouriteToList} 
+                                       FavComponent = {AddFavComponent}
+                            />)
+                    })
+            } 
+        </div>
+        <div className="row d-flex align-items-center mt-4 mb-4">
+			<Header content='Favourites' />
+		</div>
+        <div className="row">
+                {favList.map((element,index)=>{
+                    return (<MovieCard imgLink={element.Poster} 
+                        title={element.Title} 
+                        key={index} 
+                        onFavClick={removeFavouriteFromList} 
+                        FavComponent = {RemoveFavComponent}
+             />)
+                })}
+        </div>
+        
     </div>)
 }
 
