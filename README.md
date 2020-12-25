@@ -1,4 +1,13 @@
-# Getting Started with Create React App
+## This simple React project displays posters of movies searched by the user and allow user to keep track of their favourite movies.
+
+Movie details are fetched using OMDB API 
+###### URL used:'http://www.omdbapi.com/?s='+searchValue+'&apikey=5c3f7439'
+
+It stores favourite movies on local storage and displays poster of those movies in **Favourites** section of the page. User can remove movie from this list too.
+On visiting the page next time, user sees all the movie which was marked as favourite earlier.
+
+npm commands :
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
