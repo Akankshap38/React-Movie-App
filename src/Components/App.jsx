@@ -4,7 +4,7 @@ import SearchBox from "./SearchBox"
 import MovieCard from "./MovieCards"
 import AddFavComponent from "./AddFavComponent";
 import RemoveFavComponent from "./RemoveFavourite";
-
+// eslint-disable-next-line
 function App(){
 
     const [movieList, updateMovieList] = useState([]);
@@ -12,43 +12,53 @@ function App(){
     const [favList, updateFavList] = useState([]);
 
     async function searchChanged(searchValue){
-        console.log(searchValue+" sent from SearchBox components...");
         const response = await fetch('http://www.omdbapi.com/?s='+searchValue+'&apikey=5c3f7439');
         const responseJson = await response.json();
-        console.log(Array.isArray(responseJson.Search));
         if(responseJson.Search&&responseJson.Search.length>0)
             updateMovieList(responseJson.Search)
     }
 
     useEffect(()=>{
-        console.log(searchValue);
         if(searchValue.length>=3)
             searchChanged(searchValue);
     },[searchValue]);
 
     useEffect(()=>{
+        console.log('Favourite movie List changed...')
         console.log(favList);
+        
     },[favList]);
 
+    useEffect(()=>{
+        const favLocalMovie = JSON.parse(localStorage.getItem('FavouriteMovieList')|| "[]"); 
+        console.log('In local storage...');
+        console.log(favLocalMovie);
+        if(favLocalMovie.length>0)
+           { updateFavList(favLocalMovie);      
+             console.log(favList); 
+           }
+    },[]);
+
     function addFavouriteToList(title,Poster){
-        updateFavList(prevValue=>{
-            var flag = prevValue.find(element=>{
-                return element.Title===title;
-            })
-            if(typeof flag==='undefined')
-                { return [...prevValue, {
-                    Title:title,
-                    Poster:Poster
-                }] ;}
-            return prevValue;
+        var flag = favList.find(element=>{
+            return element.Title===title;
         })
+        if(typeof flag==='undefined'){
+            var newList = [...favList,{
+                Title:title,
+                Poster:Poster
+            }]
+            console.log(newList);
+            updateFavList(newList);
+            localStorage.setItem('FavouriteMovieList',JSON.stringify(newList));
+        }      
     }
 
     function removeFavouriteFromList(title,poster){
-        updateFavList(prevValue=>{ 
-            return prevValue.filter((element)=>{
-                return element.Title!==title})
-        })
+        const newList = favList.filter((element)=>{
+            return element.Title!==title})
+        updateFavList(newList);
+        localStorage.setItem('FavouriteMovieList',JSON.stringify(newList));
     }
 
     return (<div className='container-fluid movie-app'>
@@ -71,14 +81,16 @@ function App(){
 			<Header content='Favourites' />
 		</div>
         <div className="row">
-                {favList.map((element,index)=>{
+                { favList.map((element,index)=>{
                     return (<MovieCard imgLink={element.Poster} 
                         title={element.Title} 
                         key={index} 
                         onFavClick={removeFavouriteFromList} 
                         FavComponent = {RemoveFavComponent}
              />)
-                })}
+                })
+                
+                }
         </div>
         
     </div>)
